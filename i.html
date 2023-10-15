@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Information</title>
+  <link rel="stylesheet" type="text/css" href="style3.css">
+  <script src="script3.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aboutus.html">About Us</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>User Information</h2>
+    <form id="userInfoForm" onsubmit="saveUserInfo(event)">
+      <input type="date" name="dob" placeholder="Date of Birth" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="firstName" placeholder="First Name" required>
+      <input type="text" name="lastName" placeholder="Last Name" required>
+      <input type="date" name="appointmentDate" placeholder="Appointment Date" required>
+      <input type="text" name="address" placeholder="Address" required>
+      <input type="text" name="phoneNumber" placeholder="Phone Number" required>
+      <input type="text" name="bestTimeToCall" placeholder="Best Time to Call" required>
+      <select id="serviceType" required>
+        <option value="">Select Service Type</option>
+        <option value="Gardening">Gardening</option>
+        <option value="Pressure Washer">Pressure Washer</option>
+        <option value="Cleaning Windows">Cleaning Windows</option>
+        <option value="Pest Extermination">Pest Extermination</option>
+        <option value="Solar Panel Cleaning">Solar Panel Cleaning</option>
+        <option value="Gutter Cleaning">Gutter Cleaning</option>
+      </select>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <h2>Records</h2>
+    <table id="recordsTable">
+      <thead>
+        <tr>
+          <th>Appointment</th>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Appointment Date</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+          <th>Best Time to Call</th>
+          <th>Service Type</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody id="recordsTableBody">
+        <!-- Data will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+  
+  <script>
+    let editingRowId = null; // Track the ID of the row being edited
+
+    // Load user data from localStorage when the page loads
+    window.addEventListener('load', loadUserData);
+
+    function saveUserInfo(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get form data
+      const dob = document.forms["userInfoForm"]["dob"].value;
+      const email = document.forms["userInfoForm"]["email"].value;
+      const firstName = document.forms["userInfoForm"]["firstName"].value;
+      const lastName = document.forms["userInfoForm"]["lastName"].value;
+      const appointmentDate = document.forms["userInfoForm"]["appointmentDate"].value;
+      const address = document.forms["userInfoForm"]["address"].value;
+      const phoneNumber = document.forms["userInfoForm"]["phoneNumber"].value;
+      const bestTimeToCall = document.forms["userInfoForm"]["bestTimeToCall"].value;
+      const serviceType = document.forms["userInfoForm"]["serviceType"].value;
+
+      if (editingRowId) {
+        // Update the existing row in the records table
+        const row = document.getElementById(editingRowId);
+        row.cells[0].innerText = dob;
+        row.cells[1].innerText = email;
+        row.cells[2].innerText = firstName;
+        row.cells[3].innerText = lastName;
+        row.cells[4].innerText = appointmentDate;
+        row.cells[5].innerText = address;
+        row.cells[6].innerText = phoneNumber;
+        row.cells[7].innerText = bestTimeToCall;
+        row.cells[8].innerText = serviceType;
+        row.cells[9].innerHTML = '<button class="edit-btn" onclick="editUserInfo(\'' + editingRowId + '\')">Edit</button>';
+        row.cells[10].innerHTML = '<button class="delete-btn" onclick="deleteUserInfo(\'' + editingRowId + '\')">Delete</button>';
+        editingRowId = null; // Reset the editing row ID
+      } else {
+        // Create a new row for the records table
+        const recordsTableBody = document.getElementById("recordsTableBody");
+        const newRow = recordsTableBody.insertRow();
+
+        // Generate a unique ID for the new row
+        const rowId = 'row-' + Date.now();
+        newRow.id = rowId;
+
+        // Insert the user information into the new row
+        newRow.innerHTML = `
+          <td>${dob}</td>
+          <td>${email}</td>
+          <td>${firstName}</td>
+          <td>${lastName}</td>
+          <td>${appointmentDate}</td>
+          <td>${address}</td>
+          <td>${phoneNumber}</td>
+          <td>${bestTimeToCall}</td>
+          <td>${serviceType}</td>
+          <td><button class="edit-btn" onclick="editUserInfo('${rowId}')">Edit</button></td>
+          <td><button class="delete-btn" onclick="deleteUserInfo('${rowId}')">Delete</button></td>
+        `;
+
+        // Update the data in localStorage
+        updateLocalStorageData();
+
+        // Reset the form fields
+        document.getElementById("userInfoForm").reset();
+      }
+    }
+
+    function editUserInfo(rowId) {
+      // Retrieve the row being edited
+      const row = document.getElementById(rowId);
+      const cells = row.cells;
+
+      // Populate the form fields with the row data
+      document.forms["userInfoForm"]["dob"].value = cells[0].innerText;
+      document.forms["userInfoForm"]["email"].value = cells[1].innerText;
+      document.forms["userInfoForm"]["firstName"].value = cells[2].innerText;
+      document.forms["userInfoForm"]["lastName"].value = cells[3].innerText;
+      document.forms["userInfoForm"]["appointmentDate"].value = cells[4].innerText;
+      document.forms["userInfoForm"]["address"].value = cells[5].innerText;
+      document.forms["userInfoForm"]["phoneNumber"].value = cells[6].innerText;
+      document.forms["userInfoForm"]["bestTimeToCall"].value = cells[7].innerText;
+      document.forms["userInfoForm"]["serviceType"].value = cells[8].innerText;
+
+      // Set the editingRowId to the current row ID
+      editingRowId = rowId;
+    }
+
+    function deleteUserInfo(rowId) {
+      // Remove the row with the given ID from the table
+      const row = document.getElementById(rowId);
+      row.remove();
+
+      // Update the data in localStorage after deletion
+      updateLocalStorageData();
+    }
+
+    function updateLocalStorageData() {
+      // Collect the data from the table and store it in localStorage
+      const data = [];
+      const tableRows = document.querySelectorAll("#recordsTableBody tr");
+      tableRows.forEach((row) => {
+        const rowData = {
+          dob: row.cells[0].innerText,
+          email: row.cells[1].innerText,
+          firstName: row.cells[2].innerText,
+          lastName: row.cells[3].innerText,
+          appointmentDate: row.cells[4].innerText,
+          address: row.cells[5].innerText,
+          phoneNumber: row.cells[6].innerText,
+          bestTimeToCall: row.cells[7].innerText,
+          serviceType: row.cells[8].innerText,
+        };
+        data.push(rowData);
+      });
+
+      localStorage.setItem("userData", JSON.stringify(data));
+    }
+
+    function loadUserData() {
+      // Retrieve and load user data from localStorage
+      const userData = localStorage.getItem("userData");
+      if (userData) {
+        const data = JSON.parse(userData);
+        const recordsTableBody = document.getElementById("recordsTableBody");
+        data.forEach((rowData) => {
+          const newRow = recordsTableBody.insertRow();
+          newRow.innerHTML = `
+            <td>${rowData.dob}</td>
+            <td>${rowData.email}</td>
+            <td>${rowData.firstName}</td>
+            <td>${rowData.lastName}</td>
+            <td>${rowData.appointmentDate}</td>
+            <td>${rowData.address}</td>
+            <td>${rowData.phoneNumber}</td>
+            <td>${rowData.bestTimeToCall}</td>
+            <td>${rowData.serviceType}</td>
+            <td><button class="edit-btn" onclick="editUserInfo('${rowId}')">Edit</button></td>
+            <td><button class="delete-btn" onclick="deleteUserInfo('${rowId}')">Delete</button></td>
+          `;
+        });
+      }
+    }
+  </script>
+</body>
+</html>

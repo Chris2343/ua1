@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Information</title>
+  <link rel="stylesheet" type="text/css" href="style3.css">
+  <script src="script3.js"></script>
+</head>
+<body>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#aboutus.html">About Us</a></li>
+            </ul>
+        </nav>
+    
+        <form id="userForm" onsubmit="submitForm(event)">
+            <!-- Form fields... -->
+        </form>
+    
+        <div id="recordsList"></div>
+    
+        <script src="script.js"></script>
+    </body>
+    
+
+
+
+
+
+
+
+
+  <div class="container">
+    <h2>User Information</h2>
+    <form id="userInfoForm" onsubmit="saveUserInfo(event)">
+      <input type="date" name="dob" placeholder="Date of Birth" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="firstName" placeholder="First Name" required>
+      <input type="text" name="lastName" placeholder="Last Name" required>
+      <input type="date" name="appointmentDate" placeholder="Appointment Date" required>
+      <select id="immigrationType" required>
+        <option value="">Select Immigration Type</option>
+        <option value="Non-documented">Non-documented</option>
+        <option value="Document">Document</option>
+        <option value="Citizen">Citizen</option>
+        <option value="Resident">Resident</option>
+    </select>
+   
+      <button type="submit">Save</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <h2>Records</h2>
+    <table id="recordsTable">
+      <thead>
+        <tr>
+          <th>Date of Birth</th>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Appointment Date</th>
+          <th>Immigration type</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="recordsTableBody">
+      </tbody>
+    </table>
+  </div>
+  
+</body>
+</html>

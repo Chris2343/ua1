@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+  <link rel="stylesheet" type="text/css" href="style21.css">
+  <script src="script4.js"></script>
+  <link rel="shortcut icon" href="logo3.png" type="image/png">
+
+  <link rel="manifest" href="logo3.png">
+  <title>Database </title>
+  <meta name="description" content=" Sales">
+<meta property="og:site_name" content="">
+<meta property="og:type" content="product">
+<meta property="og:description" content=" AboutUs">
+
+<meta property="og:image:width" content="3000">
+</head>
+<body>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+              
+            </ul>
+        </nav>
+    
+        <form id="userForm" onsubmit="submitForm(event)">
+            <!-- Form fields... -->
+        </form>
+    
+        <div id="recordsList"></div>
+    
+        
+    </body>
+    
+
+
+
+
+
+
+
+    <div class="container">
+      <h2>User Information</h2>
+      <form id="userInfoForm" onsubmit="saveUserInfo(event)">
+        <input type="date" name="dob" placeholder="Date of Birth" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="firstName" placeholder="First Name" required>
+        <input type="text" name="lastName" placeholder="Last Name" required>
+       
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="tel" name="phoneNumber" placeholder="Phone Number" required>
+        
+
+
+
+        <select id="callBackTime" required>
+          <option value="">Select Call Back Time</option>
+          <option value="9am">9am</option>
+          <option value="10am">10am</option>
+          <option value="11am">11am</option>
+          <option value="12pm">12pm</option>
+          <option value="1pm">1pm</option>
+          <option value="2pm">2pm</option>
+          <option value="3pm">3pm</option>
+          <option value="4pm">4pm</option>
+          <option value="5pm">5pm</option>
+          <option value="6pm">6pm</option>
+          <option value="7pm">7pm</option>
+          <option value="8pm">8pm</option>
+      </select>
+
+
+
+
+   
+      <button type="submit">Save</button>
+    </form>
+  </div>
+  <div class="container records-container">
+
+    <h2>Records</h2>
+    <table id="recordsTable">
+      <thead>
+        <tr>
+          <th>Appointment</th>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          
+          <th>Address</th>
+          <th>phoneNumber</th>
+          
+          <th>callBackTime</th>
+       
+
+        </tr>
+      </thead>
+      <tbody id="recordsTableBody">
+      </tbody>
+    </table>
+  </div>
+  
+</body>
+</html>
